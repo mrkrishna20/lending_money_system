@@ -1,0 +1,38 @@
+<h1>User Dashboard</h1>
+<div><%= button_to('Logout', destroy_user_session_path, :method => :delete) %></div>
+<div>
+  <%= link_to 'Request Loan', new_loan_path %>
+</div>
+<h4>Wallet: <%= @wallet %> Rs</h4>
+<% if @loans.present? %>
+  <h2>Loans</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>User</th>
+      <th>Interest rate</th>
+      <th>Amount</th>
+      <th>state</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @loans.each do |loan| %>
+      <tr>
+        <td><%= loan.user.name %></td>
+        <td><%= loan.interest_rate %> </td>
+        <td><%= loan.amount.round(2) %> Rs</td>
+        <td><%= loan.state %></td>
+        <% if loan.state == "approved" %>
+          <td><div><%= button_to "Confirm request", loan_confirm_request_path(loan.id), method: :post %></div></td>
+          <td><div><%= button_to "Reject request", loan_reject_request_path(loan.id), method: :post %></div></td>
+        <% elsif loan.state == "open"%>
+          <td><div><%= button_to "Repay Loan", loan_repay_loan_path(loan.id), method: :post %></div></td>
+      <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div> No loans</div>
+<% end %>

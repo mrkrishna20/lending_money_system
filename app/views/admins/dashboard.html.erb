@@ -1,0 +1,28 @@
+<h1>Admin Dashboard</h1>
+<div><%= button_to('Logout', destroy_admin_session_path, :method => :delete) %></div>
+<h4>Wallet: <%= @wallet %> Rs</h4>
+<% if @loan_requests.present? %>
+  <h2>Loan requests</h2>
+  <% @loan_requests.each do |loan_request| %>
+    <p>
+    <%= form_with scope: loan_request, url: admins_loan_update_path(loan_request.id), method: :patch do |form| %>
+      <%= form.hidden_field :state, value: "approved" %>
+      <div>
+          <div>User name: <%= loan_request.user.name %></div>
+          <div>State: <%= loan_request.state %></div>
+          <div>Interest rate: <%= form.number_field :interest_rate %> %</div>
+          <div>Amount: <%= loan_request.amount.round(2) %> Rs</div>
+          <% if loan_request.state == "requested" %>
+            <span><%= form.submit "Approve loan" %></span>
+          <% end %>
+        </div>
+    <% end %>
+    <% if loan_request.state == "requested" %>
+      <div><%= button_to "Reject", admins_loan_reject_loan_path(loan_request.id), method: :post, class: "test" %></div>
+    <% end %>
+    </p>
+    <br/>
+    <% end %>
+<% else %>
+  <div> No loan Request</div>
+<% end %>

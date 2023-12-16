@@ -1,0 +1,9 @@
+:scheduler:
+  :schedule:
+    interest_calculator:
+      cron: '5 * * * * *'   # Runs once per 5 minute
+      class: InterestCalculatorJob
+
+    process_loan_amount:
+      cron: '5 * * * * *'
+      class: ProcessLoanAmountJob

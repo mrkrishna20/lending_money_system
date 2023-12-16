@@ -1,0 +1,18 @@
+<h1>Create loan request</h1>
+<%= form_with model: @loan do |form| %>
+  <%= form.hidden_field :state, value: "requested" %>
+  <div>
+    <%= form.label :amount %>
+    <%= form.number_field :amount %>
+    <% @loan.errors.full_messages_for(:amount).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <br/>
+  <div>
+    <%= form.label :Lender %>
+    <%= select("loan", "admin_id", Admin.all.collect {|admin| [admin.name, admin.id]}) %>
+  </div>
+  <br/>
+  <div><%= form.submit %></div>
+<% end %>
